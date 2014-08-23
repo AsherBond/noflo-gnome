@@ -7,11 +7,73 @@
  "outports": {},
  "groups": [
   {
-   "name": "Print",
+   "name": "Status",
    "nodes": [
-    "Message",
-    "StartClicked",
-    "gnome/Log_7m3j2"
+    "SetStatus",
+    "StatusLabel"
+   ],
+   "metadata": {
+    "description": ""
+   }
+  },
+  {
+   "name": "Volume",
+   "nodes": [
+    "Percent",
+    "SetSoundValue",
+    "SoundSlider"
+   ],
+   "metadata": {
+    "description": ""
+   }
+  },
+  {
+   "name": "Init",
+   "nodes": [
+    "ShowAll",
+    "Slider",
+    "core/Repeat_u1nsj",
+    "gtk/Init_ynmps"
+   ],
+   "metadata": {
+    "description": ""
+   }
+  },
+  {
+   "name": "Quit",
+   "nodes": [
+    "WindowDestroy",
+    "gtk/Quit_p6dkl"
+   ],
+   "metadata": {
+    "description": ""
+   }
+  },
+  {
+   "name": "PlayPause",
+   "nodes": [
+    "PlayClicked",
+    "PlayPause"
+   ],
+   "metadata": {
+    "description": ""
+   }
+  },
+  {
+   "name": "Next",
+   "nodes": [
+    "NextClicked",
+    "PlayerNext"
+   ],
+   "metadata": {
+    "description": ""
+   }
+  },
+  {
+   "name": "Previous",
+   "nodes": [
+    "PlayerPrev",
+    "PrevClicked"
    ],
    "metadata": {
     "description": ""
@@ -23,64 +85,32 @@
    "component": "gtk/Init",
    "metadata": {
     "label": "gtk/Init",
-    "x": 180,
-    "y": 36
-   }
-  },
-  "UI": {
-   "component": "gtk-builder/basic-ui",
-   "metadata": {
-    "label": "UI",
-    "x": 324,
-    "y": 36
+    "x": -216,
+    "y": -108
    }
   },
   "ShowAll": {
    "component": "gtk/Show",
    "metadata": {
     "label": "ShowAll",
-    "x": 540,
-    "y": -216
-   }
-  },
-  "StartClicked": {
-   "component": "gnome/ListenSignal",
-   "metadata": {
-    "label": "StartClicked",
-    "x": 792,
-    "y": -144
-   }
-  },
-  "gnome/Log_7m3j2": {
-   "component": "gnome/Log",
-   "metadata": {
-    "label": "gnome/Log",
-    "x": 1080,
-    "y": -144
-   }
-  },
-  "Message": {
-   "component": "core/Kick",
-   "metadata": {
-    "label": "Message",
-    "x": 936,
-    "y": -144
+    "x": 144,
+    "y": -108
    }
   },
   "core/Repeat_u1nsj": {
    "component": "core/Repeat",
    "metadata": {
     "label": "core/Repeat",
-    "x": 36,
-    "y": 36
+    "x": -360,
+    "y": -108
    }
   },
   "Slider": {
    "component": "gtk-builder/sliderui",
    "metadata": {
     "label": "Slider",
-    "x": 324,
-    "y": 144
+    "x": 36,
+    "y": 36
    }
   },
   "ListenScale": {
@@ -95,7 +125,7 @@
    "component": "objects/SetPropertyValue",
    "metadata": {
     "label": "SetSpinnerVal",
-    "x": 828,
+    "x": 864,
     "y": 288
    }
   },
@@ -111,40 +141,40 @@
    "component": "math/Multiply",
    "metadata": {
     "label": "Percent",
-    "x": 360,
-    "y": 504
+    "x": 540,
+    "y": 684
    }
   },
   "SetSoundValue": {
    "component": "objects/SetPropertyValue",
    "metadata": {
     "label": "SetSoundValue",
-    "x": 648,
-    "y": 504
+    "x": 828,
+    "y": 684
    }
   },
-  "core/Kick_lji4i": {
+  "SoundSlider": {
    "component": "core/Kick",
    "metadata": {
-    "label": "core/Kick",
-    "x": 504,
-    "y": 324
+    "label": "SoundSlider",
+    "x": 684,
+    "y": 576
    }
   },
   "PlayerGet": {
    "component": "dbus/org.mpris.MediaPlayer2.Player-rprops",
    "metadata": {
     "label": "PlayerGet",
-    "x": 180,
-    "y": 504
+    "x": -36,
+    "y": 684
    }
   },
   "PlayerSet": {
    "component": "dbus/org.mpris.MediaPlayer2.Player-wprops",
    "metadata": {
     "label": "PlayerSet",
-    "x": 828,
-    "y": 504
+    "x": 864,
+    "y": 396
    }
   },
   "Ratio": {
@@ -155,39 +185,104 @@
     "y": 396
    }
   },
-  "gnome/Log_n2lgn": {
+  "PlayPause": {
+   "component": "dbus/org.mpris.MediaPlayer2.Player.PlayPause",
+   "metadata": {
+    "label": "PlayPause",
+    "x": 720,
+    "y": 0
+   }
+  },
+  "StatusLabel": {
+   "component": "core/Kick",
+   "metadata": {
+    "label": "StatusLabel",
+    "x": 540,
+    "y": 864
+   }
+  },
+  "SetStatus": {
+   "component": "objects/SetPropertyValue",
+   "metadata": {
+    "label": "SetStatus",
+    "x": 720,
+    "y": 864
+   }
+  },
+  "PlayClicked": {
+   "component": "gnome/ListenSignal",
+   "metadata": {
+    "label": "PlayClicked",
+    "x": 540,
+    "y": 0
+   }
+  },
+  "gnome/Log_ba7n0": {
    "component": "gnome/Log",
    "metadata": {
     "label": "gnome/Log",
-    "x": 828,
-    "y": 396
+    "x": 180,
+    "y": 576
+   }
+  },
+  "gtk/Quit_p6dkl": {
+   "component": "gtk/Quit",
+   "metadata": {
+    "label": "gtk/Quit",
+    "x": 720,
+    "y": -540
+   }
+  },
+  "WindowDestroy": {
+   "component": "gnome/ListenSignal",
+   "metadata": {
+    "label": "WindowDestroy",
+    "x": 540,
+    "y": -540
+   }
+  },
+  "gtk/Main_dq1md": {
+   "component": "gtk/Main",
+   "metadata": {
+    "label": "gtk/Main",
+    "x": -108,
+    "y": -108
+   }
+  },
+  "PlayerNext": {
+   "component": "dbus/org.mpris.MediaPlayer2.Player.Next",
+   "metadata": {
+    "label": "PlayerNext",
+    "x": 720,
+    "y": -360
+   }
+  },
+  "PlayerPrev": {
+   "component": "dbus/org.mpris.MediaPlayer2.Player.Previous",
+   "metadata": {
+    "label": "PlayerPrev",
+    "x": 720,
+    "y": -180
+   }
+  },
+  "NextClicked": {
+   "component": "gnome/ListenSignal",
+   "metadata": {
+    "label": "NextClicked",
+    "x": 540,
+    "y": -360
+   }
+  },
+  "PrevClicked": {
+   "component": "gnome/ListenSignal",
+   "metadata": {
+    "label": "PrevClicked",
+    "x": 540,
+    "y": -180
    }
   }
  },
  "connections": [
-  {
-   "src": {
-    "process": "gtk/Init_ynmps",
-    "port": "out"
-   },
-   "tgt": {
-    "process": "UI",
-    "port": "start"
-   }
-  },
-  {
-   "src": {
-    "process": "Message",
-    "port": "out"
-   },
-   "tgt": {
-    "process": "gnome/Log_7m3j2",
-    "port": "in"
-   },
-   "metadata": {
-    "route": 7
-   }
-  },
   {
    "src": {
     "process": "core/Repeat_u1nsj",
@@ -200,22 +295,15 @@
   },
   {
    "src": {
-    "process": "UI",
-    "port": "button_window"
-   },
-   "tgt": {
-    "process": "ShowAll",
-    "port": "in"
-   }
-  },
-  {
-   "src": {
     "process": "Slider",
     "port": "window1"
    },
    "tgt": {
     "process": "ShowAll",
     "port": "in"
+   },
+   "metadata": {
+    "route": 7
    }
   },
   {
@@ -243,19 +331,6 @@
   },
   {
    "src": {
-    "process": "gtk/Init_ynmps",
-    "port": "out"
-   },
-   "tgt": {
-    "process": "Slider",
-    "port": "start"
-   },
-   "metadata": {
-    "route": 0
-   }
-  },
-  {
-   "src": {
     "process": "Slider",
     "port": "spinadjust"
    },
@@ -276,16 +351,6 @@
   },
   {
    "src": {
-    "process": "UI",
-    "port": "start_button"
-   },
-   "tgt": {
-    "process": "StartClicked",
-    "port": "object"
-   }
-  },
-  {
-   "src": {
     "process": "ListenScale",
     "port": "value"
    },
@@ -299,19 +364,6 @@
   },
   {
    "src": {
-    "process": "StartClicked",
-    "port": "object"
-   },
-   "tgt": {
-    "process": "Message",
-    "port": "in"
-   },
-   "metadata": {
-    "route": 7
-   }
-  },
-  {
-   "src": {
     "process": "Percent",
     "port": "product"
    },
@@ -326,7 +378,7 @@
     "port": "product"
    },
    "tgt": {
-    "process": "core/Kick_lji4i",
+    "process": "SoundSlider",
     "port": "in"
    },
    "metadata": {
@@ -339,21 +391,24 @@
     "port": "soundadjust"
    },
    "tgt": {
-    "process": "core/Kick_lji4i",
+    "process": "SoundSlider",
     "port": "data"
    },
    "metadata": {
-    "route": null
+    "route": 7
    }
   },
   {
    "src": {
-    "process": "core/Kick_lji4i",
+    "process": "SoundSlider",
     "port": "out"
    },
    "tgt": {
     "process": "SetSoundValue",
     "port": "in"
+   },
+   "metadata": {
+    "route": 7
    }
   },
   {
@@ -385,16 +440,6 @@
     "port": "quotient"
    },
    "tgt": {
-    "process": "gnome/Log_n2lgn",
-    "port": "in"
-   }
-  },
-  {
-   "src": {
-    "process": "Ratio",
-    "port": "quotient"
-   },
-   "tgt": {
     "process": "PlayerSet",
     "port": "volume"
    },
@@ -403,24 +448,200 @@
    }
   },
   {
+   "src": {
+    "process": "Slider",
+    "port": "statuslabel"
+   },
+   "tgt": {
+    "process": "StatusLabel",
+    "port": "data"
+   },
+   "metadata": {
+    "route": 7
+   }
+  },
+  {
+   "src": {
+    "process": "StatusLabel",
+    "port": "out"
+   },
+   "tgt": {
+    "process": "SetStatus",
+    "port": "in"
+   },
+   "metadata": {
+    "route": 7
+   }
+  },
+  {
+   "src": {
+    "process": "PlayerGet",
+    "port": "playbackstatus"
+   },
+   "tgt": {
+    "process": "SetStatus",
+    "port": "value"
+   },
+   "metadata": {
+    "route": null
+   }
+  },
+  {
+   "src": {
+    "process": "PlayerGet",
+    "port": "playbackstatus"
+   },
+   "tgt": {
+    "process": "StatusLabel",
+    "port": "in"
+   },
+   "metadata": {
+    "route": 0
+   }
+  },
+  {
+   "src": {
+    "process": "Slider",
+    "port": "playbutton"
+   },
+   "tgt": {
+    "process": "PlayClicked",
+    "port": "object"
+   },
+   "metadata": {
+    "route": 7
+   }
+  },
+  {
+   "src": {
+    "process": "PlayClicked",
+    "port": "object"
+   },
+   "tgt": {
+    "process": "PlayPause",
+    "port": "call"
+   }
+  },
+  {
+   "src": {
+    "process": "PlayerGet",
+    "port": "position"
+   },
+   "tgt": {
+    "process": "gnome/Log_ba7n0",
+    "port": "in"
+   },
+   "metadata": {
+    "route": null
+   }
+  },
+  {
+   "src": {
+    "process": "PlayerGet",
+    "port": "rate"
+   },
+   "tgt": {
+    "process": "gnome/Log_ba7n0",
+    "port": "in"
+   }
+  },
+  {
+   "src": {
+    "process": "WindowDestroy",
+    "port": "object"
+   },
+   "tgt": {
+    "process": "gtk/Quit_p6dkl",
+    "port": "in"
+   }
+  },
+  {
+   "src": {
+    "process": "Slider",
+    "port": "window1"
+   },
+   "tgt": {
+    "process": "WindowDestroy",
+    "port": "object"
+   },
+   "metadata": {
+    "route": 7
+   }
+  },
+  {
+   "src": {
+    "process": "gtk/Init_ynmps",
+    "port": "out"
+   },
+   "tgt": {
+    "process": "gtk/Main_dq1md",
+    "port": "in"
+   },
+   "metadata": {
+    "route": null
+   }
+  },
+  {
+   "src": {
+    "process": "gtk/Main_dq1md",
+    "port": "out"
+   },
+   "tgt": {
+    "process": "Slider",
+    "port": "start"
+   }
+  },
+  {
+   "src": {
+    "process": "NextClicked",
+    "port": "object"
+   },
+   "tgt": {
+    "process": "PlayerNext",
+    "port": "call"
+   }
+  },
+  {
+   "src": {
+    "process": "Slider",
+    "port": "nextbutton"
+   },
+   "tgt": {
+    "process": "NextClicked",
+    "port": "object"
+   },
+   "metadata": {
+    "route": 7
+   }
+  },
+  {
+   "src": {
+    "process": "PrevClicked",
+    "port": "object"
+   },
+   "tgt": {
+    "process": "PlayerPrev",
+    "port": "call"
+   }
+  },
+  {
+   "src": {
+    "process": "Slider",
+    "port": "backbutton"
+   },
+   "tgt": {
+    "process": "PrevClicked",
+    "port": "object"
+   },
+   "metadata": {
+    "route": 7
+   }
+  },
+  {
    "data": true,
    "tgt": {
     "process": "ShowAll",
     "port": "all"
-   }
-  },
-  {
-   "data": "clicked",
-   "tgt": {
-    "process": "StartClicked",
-    "port": "signal"
-   }
-  },
-  {
-   "data": "\"Yooooo!\"",
-   "tgt": {
-    "process": "Message",
-    "port": "data"
    }
   },
   {
@@ -491,6 +712,83 @@
    "tgt": {
     "process": "Ratio",
     "port": "divisor"
+   }
+  },
+  {
+   "data": "org.gnome.Rhythmbox3",
+   "tgt": {
+    "process": "PlayPause",
+    "port": "bus"
+   }
+  },
+  {
+   "data": "/org/mpris/MediaPlayer2",
+   "tgt": {
+    "process": "PlayPause",
+    "port": "path"
+   }
+  },
+  {
+   "data": "label",
+   "tgt": {
+    "process": "SetStatus",
+    "port": "property"
+   }
+  },
+  {
+   "data": "clicked",
+   "tgt": {
+    "process": "PlayClicked",
+    "port": "signal"
+   }
+  },
+  {
+   "data": "destroy",
+   "tgt": {
+    "process": "WindowDestroy",
+    "port": "signal"
+   }
+  },
+  {
+   "data": "org.gnome.Rhythmbox3",
+   "tgt": {
+    "process": "PlayerNext",
+    "port": "bus"
+   }
+  },
+  {
+   "data": "/org/mpris/MediaPlayer2",
+   "tgt": {
+    "process": "PlayerNext",
+    "port": "path"
+   }
+  },
+  {
+   "data": "org.gnome.Rhythmbox3",
+   "tgt": {
+    "process": "PlayerPrev",
+    "port": "bus"
+   }
+  },
+  {
+   "data": "/org/mpris/MediaPlayer2",
+   "tgt": {
+    "process": "PlayerPrev",
+    "port": "path"
+   }
+  },
+  {
+   "data": "clicked",
+   "tgt": {
+    "process": "NextClicked",
+    "port": "signal"
+   }
+  },
+  {
+   "data": "clicked",
+   "tgt": {
+    "process": "PrevClicked",
+    "port": "signal"
    }
   }
  ]

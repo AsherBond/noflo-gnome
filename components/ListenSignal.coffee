@@ -1,5 +1,4 @@
 noflo = require 'noflo'
-Lang = imports.lang
 
 class ListenSignal extends noflo.Component
   description: 'Listen to a signal on a given object'
@@ -30,7 +29,7 @@ class ListenSignal extends noflo.Component
   updateListener: () ->
     return unless @object? and @signal?
     @disconnectListener()
-    @listener = @object.connect @signal, Lang.bind @, () =>
+    @listener = @object.connect @signal, () =>
       @outPorts.object.send true
       @outPorts.object.disconnect()
 
