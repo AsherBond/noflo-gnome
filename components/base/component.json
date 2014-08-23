@@ -1,0 +1,48 @@
+{
+  "name": "noflo-gnome",
+  "json": [
+    "component.json"
+  ],
+  "scripts": [
+    "Arguments.coffee",
+    "ComponentLoader.coffee",
+    "ContentToString.coffee",
+    "DbusComponentFactory.coffee",
+    "DbusComponentLoader.coffee",
+    "GioFileMonitor.coffee",
+    "GioFileLoadContent.coffee",
+    "GioFileWrite.coffee",
+    "GioInputStreamFromFd.coffee",
+    "GioOutputStreamFromFd.coffee",
+    "GioStreamClose.coffee",
+    "GioStreamReadAll.coffee",
+    "GLibSpawn.coffee",
+    "ListenProperty.coffee",
+    "ListenSignal.coffee",
+    "Log.coffee",
+    "PathToUri.coffee",
+    "Print.coffee",
+    "RunGC.coffee"
+  ],
+  "noflo": {
+    "loader": "ComponentLoader.coffee",
+    "components": {
+      "Arguments": "Arguments.coffee",
+      "ContentToString": "ContentToString.coffee",
+      "GioFileMonitor": "GioFileMonitor.coffee",
+      "GioFileLoadContent": "GioFileLoadContent.coffee",
+      "GioFileWrite": "GioFileWrite.coffee",
+      "GioInputStreamFromFd": "GioInputStreamFromFd.coffee",
+      "GioOutputStreamFromFd": "GioOutputStreamFromFd.coffee",
+      "GioStreamClose": "GioStreamClose.coffee",
+      "GioStreamReadAll": "GioStreamReadAll.coffee",
+      "GLibSpawn": "GLibSpawn.coffee",
+      "ListenProperty": "ListenProperty.coffee",
+      "ListenSignal": "ListenSignal.coffee",
+      "Log": "Log.coffee",
+      "PathToUri": "PathToUri.coffee",
+      "Print": "Print.coffee",
+      "RunGC": "RunGC.coffee"
+    }
+  }
+}

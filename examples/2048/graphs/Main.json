@@ -1,0 +1,1178 @@
+{
+ "properties": {
+  "name": "Main",
+  "id": "Main"
+ },
+ "inports": {},
+ "outports": {},
+ "groups": [
+  {
+   "name": "NewGame",
+   "nodes": [
+    "AddTile1",
+    "AddTile2",
+    "DisplayMap",
+    "NewClicked",
+    "NewMap"
+   ],
+   "metadata": {
+    "description": ""
+   }
+  },
+  {
+   "name": "CreateStage",
+   "nodes": [
+    "Stage",
+    "core/Kick_viopv",
+    "reactive",
+    "strings/ParseJson_g3xf8"
+   ],
+   "metadata": {
+    "description": ""
+   }
+  },
+  {
+   "name": "Swipe",
+   "nodes": [
+    "ConsumeMoveEvent",
+    "Events",
+    "SwipeDetect"
+   ],
+   "metadata": {
+    "description": ""
+   }
+  },
+  {
+   "name": "Key",
+   "nodes": [
+    "ConsumeKeyEvent_hoab6",
+    "KeyPress",
+    "ListenKeyEvent",
+    "LowerCase"
+   ],
+   "metadata": {
+    "description": ""
+   }
+  },
+  {
+   "name": "Init",
+   "nodes": [
+    "GrabFocus",
+    "Init",
+    "Main",
+    "PackEmbedded",
+    "UI",
+    "ShowAll"
+   ],
+   "metadata": {
+    "description": ""
+   }
+  },
+  {
+   "name": "AnimateTiles",
+   "nodes": [
+    "AddTile",
+    "AnimateTiles",
+    "SquashTiles",
+    "core/Kick_i8uh5"
+   ],
+   "metadata": {
+    "description": ""
+   }
+  },
+  {
+   "name": "DestroyOldMap",
+   "nodes": [
+    "500Delay",
+    "DestroyOldMap",
+    "core/Kick_xoynk"
+   ],
+   "metadata": {
+    "description": ""
+   }
+  },
+  {
+   "name": "CountScore",
+   "nodes": [
+    "Count",
+    "ScoreLabel",
+    "SetScore",
+    "strings/ToString_eltil"
+   ],
+   "metadata": {
+    "description": ""
+   }
+  },
+  {
+   "name": "Quit",
+   "nodes": [
+    "Quit",
+    "QuitClicked",
+    "WindowDestroyed"
+   ],
+   "metadata": {
+    "description": ""
+   }
+  }
+ ],
+ "processes": {
+  "UI": {
+   "component": "gtk-builder/2048ui",
+   "metadata": {
+    "label": "UI",
+    "x": 144,
+    "y": 288
+   }
+  },
+  "Start": {
+   "component": "core/RepeatAsync",
+   "metadata": {
+    "label": "Start",
+    "x": -216,
+    "y": 288
+   }
+  },
+  "ShowAll": {
+   "component": "gtk/Show",
+   "metadata": {
+    "label": "ShowAll",
+    "x": 324,
+    "y": 288
+   }
+  },
+  "PackEmbedded": {
+   "component": "gtk/Pack",
+   "metadata": {
+    "label": "PackEmbedded",
+    "x": 504,
+    "y": 180
+   }
+  },
+  "CreateEmbeddedStage": {
+   "component": "gtkclutter/CreateEmbed",
+   "metadata": {
+    "label": "CreateEmbeddedStage",
+    "x": 324,
+    "y": 144
+   }
+  },
+  "Init": {
+   "component": "gtk/ClutterInit",
+   "metadata": {
+    "label": "Init",
+    "x": -72,
+    "y": 288
+   }
+  },
+  "Main": {
+   "component": "gtk/Main",
+   "metadata": {
+    "label": "Main",
+    "x": 36,
+    "y": 288
+   }
+  },
+  "NewClicked": {
+   "component": "gnome/ListenSignal",
+   "metadata": {
+    "label": "NewClicked",
+    "x": 432,
+    "y": 540
+   }
+  },
+  "NewMap": {
+   "component": "2048/EmptyMap",
+   "metadata": {
+    "label": "NewMap",
+    "x": 576,
+    "y": 540
+   }
+  },
+  "AddTile1": {
+   "component": "2048/AddTile",
+   "metadata": {
+    "label": "AddTile1",
+    "x": 864,
+    "y": 540
+   }
+  },
+  "AddTile2": {
+   "component": "2048/AddTile",
+   "metadata": {
+    "label": "AddTile2",
+    "x": 972,
+    "y": 540
+   }
+  },
+  "SwipeDetect": {
+   "component": "clutter/SwipeDetect",
+   "metadata": {
+    "label": "SwipeDetect",
+    "x": 1044,
+    "y": 144
+   }
+  },
+  "Stage": {
+   "component": "gtk/GetStage",
+   "metadata": {
+    "label": "Stage",
+    "x": 648,
+    "y": -324
+   }
+  },
+  "reactive": {
+   "component": "objects/SetPropertyValue",
+   "metadata": {
+    "label": "reactive",
+    "x": 1080,
+    "y": -324
+   }
+  },
+  "core/Kick_viopv": {
+   "component": "core/Kick",
+   "metadata": {
+    "label": "core/Kick",
+    "x": 792,
+    "y": -432
+   }
+  },
+  "strings/ParseJson_g3xf8": {
+   "component": "strings/ParseJson",
+   "metadata": {
+    "label": "strings/ParseJson",
+    "x": 900,
+    "y": -432
+   }
+  },
+  "Events": {
+   "component": "clutter/ListenEvent",
+   "metadata": {
+    "label": "Events",
+    "x": 900,
+    "y": 144
+   }
+  },
+  "SquashTiles": {
+   "component": "2048/SquashTiles",
+   "metadata": {
+    "label": "SquashTiles",
+    "x": 1728,
+    "y": 396
+   }
+  },
+  "AddTile": {
+   "component": "2048/AddTile",
+   "metadata": {
+    "label": "AddTile",
+    "x": 2016,
+    "y": 396
+   }
+  },
+  "DisplayMap": {
+   "component": "2048/DisplayMap",
+   "metadata": {
+    "label": "DisplayMap",
+    "x": 756,
+    "y": 540
+   }
+  },
+  "AnimateTiles": {
+   "component": "2048/ApplyAnimations",
+   "metadata": {
+    "label": "AnimateTiles",
+    "x": 2160,
+    "y": 468
+   }
+  },
+  "ConsumeMoveEvent": {
+   "component": "clutter/ClutterEventConsume",
+   "metadata": {
+    "label": "ConsumeMoveEvent",
+    "x": 1188,
+    "y": 216
+   }
+  },
+  "QuitClicked": {
+   "component": "gnome/ListenSignal",
+   "metadata": {
+    "label": "QuitClicked",
+    "x": 468,
+    "y": 1044
+   }
+  },
+  "Quit": {
+   "component": "gtk/Quit",
+   "metadata": {
+    "label": "Quit",
+    "x": 612,
+    "y": 1044
+   }
+  },
+  "core/Kick_i8uh5": {
+   "component": "core/Kick",
+   "metadata": {
+    "label": "core/Kick",
+    "x": 1872,
+    "y": 396
+   }
+  },
+  "GrabFocus": {
+   "component": "gtk/GrabFocus",
+   "metadata": {
+    "label": "GrabFocus",
+    "x": 504,
+    "y": 72
+   }
+  },
+  "ListenKeyEvent": {
+   "component": "gtk/ListenEvent",
+   "metadata": {
+    "label": "ListenKeyEvent",
+    "x": 900,
+    "y": -108
+   }
+  },
+  "KeyPress": {
+   "component": "gtk/KeyPressDetect",
+   "metadata": {
+    "label": "KeyPress",
+    "x": 1044,
+    "y": -108
+   }
+  },
+  "ConsumeKeyEvent_hoab6": {
+   "component": "gtk/ConsumeEvent",
+   "metadata": {
+    "label": "ConsumeKeyEvent",
+    "x": 1188,
+    "y": -144
+   }
+  },
+  "LowerCase": {
+   "component": "strings/LowerCaseString",
+   "metadata": {
+    "label": "LowerCase",
+    "x": 1188,
+    "y": -36
+   }
+  },
+  "Gate": {
+   "component": "flow/Gate",
+   "metadata": {
+    "label": "Gate",
+    "x": 1512,
+    "y": 324
+   }
+  },
+  "DestroyOldMap": {
+   "component": "2048/DestroyMap",
+   "metadata": {
+    "label": "DestroyOldMap",
+    "x": 1044,
+    "y": 720
+   }
+  },
+  "core/Kick_xoynk": {
+   "component": "core/Kick",
+   "metadata": {
+    "label": "core/Kick",
+    "x": 936,
+    "y": 720
+   }
+  },
+  "500Delay": {
+   "component": "core/RepeatDelayed",
+   "metadata": {
+    "label": "500Delay",
+    "x": 792,
+    "y": 720
+   }
+  },
+  "Count": {
+   "component": "math/Accumulate",
+   "metadata": {
+    "label": "Count",
+    "x": 1980,
+    "y": 216
+   }
+  },
+  "strings/ToString_eltil": {
+   "component": "strings/ToString",
+   "metadata": {
+    "label": "strings/ToString",
+    "x": 2124,
+    "y": 216
+   }
+  },
+  "SetScore": {
+   "component": "objects/SetPropertyValue",
+   "metadata": {
+    "label": "SetScore",
+    "x": 2304,
+    "y": 144
+   }
+  },
+  "ScoreLabel": {
+   "component": "core/Kick",
+   "metadata": {
+    "label": "ScoreLabel",
+    "x": 2124,
+    "y": 72
+   }
+  },
+  "WindowDestroyed": {
+   "component": "gnome/ListenSignal",
+   "metadata": {
+    "label": "WindowDestroyed",
+    "x": 468,
+    "y": 900
+   }
+  }
+ },
+ "connections": [
+  {
+   "src": {
+    "process": "UI",
+    "port": "mainwindow"
+   },
+   "tgt": {
+    "process": "ShowAll",
+    "port": "in"
+   },
+   "metadata": {
+    "route": 7
+   }
+  },
+  {
+   "src": {
+    "process": "Start",
+    "port": "out"
+   },
+   "tgt": {
+    "process": "Init",
+    "port": "in"
+   },
+   "metadata": {
+    "route": null
+   }
+  },
+  {
+   "src": {
+    "process": "Init",
+    "port": "out"
+   },
+   "tgt": {
+    "process": "Main",
+    "port": "in"
+   }
+  },
+  {
+   "src": {
+    "process": "Main",
+    "port": "out"
+   },
+   "tgt": {
+    "process": "UI",
+    "port": "start"
+   }
+  },
+  {
+   "src": {
+    "process": "UI",
+    "port": "mainbox"
+   },
+   "tgt": {
+    "process": "CreateEmbeddedStage",
+    "port": "create"
+   },
+   "metadata": {
+    "route": 7
+   }
+  },
+  {
+   "src": {
+    "process": "CreateEmbeddedStage",
+    "port": "instance"
+   },
+   "tgt": {
+    "process": "PackEmbedded",
+    "port": "child"
+   },
+   "metadata": {
+    "route": 7
+   }
+  },
+  {
+   "src": {
+    "process": "UI",
+    "port": "mainbox"
+   },
+   "tgt": {
+    "process": "PackEmbedded",
+    "port": "parent"
+   },
+   "metadata": {
+    "route": 7
+   }
+  },
+  {
+   "src": {
+    "process": "UI",
+    "port": "newbutton"
+   },
+   "tgt": {
+    "process": "NewClicked",
+    "port": "object"
+   },
+   "metadata": {
+    "route": 7
+   }
+  },
+  {
+   "src": {
+    "process": "NewClicked",
+    "port": "object"
+   },
+   "tgt": {
+    "process": "NewMap",
+    "port": "create"
+   }
+  },
+  {
+   "src": {
+    "process": "AddTile1",
+    "port": "map"
+   },
+   "tgt": {
+    "process": "AddTile2",
+    "port": "map"
+   },
+   "metadata": {
+    "route": 2
+   }
+  },
+  {
+   "src": {
+    "process": "Stage",
+    "port": "stage"
+   },
+   "tgt": {
+    "process": "reactive",
+    "port": "in"
+   },
+   "metadata": {
+    "route": 4
+   }
+  },
+  {
+   "src": {
+    "process": "Stage",
+    "port": "stage"
+   },
+   "tgt": {
+    "process": "core/Kick_viopv",
+    "port": "in"
+   },
+   "metadata": {
+    "route": 4
+   }
+  },
+  {
+   "src": {
+    "process": "core/Kick_viopv",
+    "port": "out"
+   },
+   "tgt": {
+    "process": "strings/ParseJson_g3xf8",
+    "port": "in"
+   }
+  },
+  {
+   "src": {
+    "process": "strings/ParseJson_g3xf8",
+    "port": "out"
+   },
+   "tgt": {
+    "process": "reactive",
+    "port": "value"
+   }
+  },
+  {
+   "src": {
+    "process": "Stage",
+    "port": "stage"
+   },
+   "tgt": {
+    "process": "Events",
+    "port": "actor"
+   },
+   "metadata": {
+    "route": 4
+   }
+  },
+  {
+   "src": {
+    "process": "AddTile2",
+    "port": "map"
+   },
+   "tgt": {
+    "process": "SquashTiles",
+    "port": "map"
+   },
+   "metadata": {
+    "route": 2
+   }
+  },
+  {
+   "src": {
+    "process": "AddTile",
+    "port": "map"
+   },
+   "tgt": {
+    "process": "SquashTiles",
+    "port": "map"
+   },
+   "metadata": {
+    "route": 2
+   }
+  },
+  {
+   "src": {
+    "process": "NewMap",
+    "port": "map"
+   },
+   "tgt": {
+    "process": "DisplayMap",
+    "port": "map"
+   },
+   "metadata": {
+    "route": 2
+   }
+  },
+  {
+   "src": {
+    "process": "Stage",
+    "port": "stage"
+   },
+   "tgt": {
+    "process": "DisplayMap",
+    "port": "stage"
+   },
+   "metadata": {
+    "route": 4
+   }
+  },
+  {
+   "src": {
+    "process": "DisplayMap",
+    "port": "map"
+   },
+   "tgt": {
+    "process": "AddTile1",
+    "port": "map"
+   },
+   "metadata": {
+    "route": 2
+   }
+  },
+  {
+   "src": {
+    "process": "AddTile2",
+    "port": "map"
+   },
+   "tgt": {
+    "process": "AnimateTiles",
+    "port": "map"
+   },
+   "metadata": {
+    "route": 2
+   }
+  },
+  {
+   "src": {
+    "process": "AddTile",
+    "port": "map"
+   },
+   "tgt": {
+    "process": "AnimateTiles",
+    "port": "map"
+   },
+   "metadata": {
+    "route": 2
+   }
+  },
+  {
+   "src": {
+    "process": "SwipeDetect",
+    "port": "processedevent"
+   },
+   "tgt": {
+    "process": "ConsumeMoveEvent",
+    "port": "event"
+   }
+  },
+  {
+   "src": {
+    "process": "UI",
+    "port": "quitbutton"
+   },
+   "tgt": {
+    "process": "QuitClicked",
+    "port": "object"
+   },
+   "metadata": {
+    "route": 7
+   }
+  },
+  {
+   "src": {
+    "process": "QuitClicked",
+    "port": "object"
+   },
+   "tgt": {
+    "process": "Quit",
+    "port": "in"
+   }
+  },
+  {
+   "src": {
+    "process": "SquashTiles",
+    "port": "map"
+   },
+   "tgt": {
+    "process": "core/Kick_i8uh5",
+    "port": "data"
+   },
+   "metadata": {
+    "route": null
+   }
+  },
+  {
+   "src": {
+    "process": "SquashTiles",
+    "port": "modified"
+   },
+   "tgt": {
+    "process": "core/Kick_i8uh5",
+    "port": "in"
+   }
+  },
+  {
+   "src": {
+    "process": "core/Kick_i8uh5",
+    "port": "out"
+   },
+   "tgt": {
+    "process": "AddTile",
+    "port": "map"
+   }
+  },
+  {
+   "src": {
+    "process": "CreateEmbeddedStage",
+    "port": "instance"
+   },
+   "tgt": {
+    "process": "GrabFocus",
+    "port": "in"
+   },
+   "metadata": {
+    "route": 7
+   }
+  },
+  {
+   "src": {
+    "process": "GrabFocus",
+    "port": "out"
+   },
+   "tgt": {
+    "process": "Stage",
+    "port": "embedded"
+   },
+   "metadata": {
+    "route": 7
+   }
+  },
+  {
+   "src": {
+    "process": "GrabFocus",
+    "port": "out"
+   },
+   "tgt": {
+    "process": "ListenKeyEvent",
+    "port": "widget"
+   },
+   "metadata": {
+    "route": 7
+   }
+  },
+  {
+   "src": {
+    "process": "ListenKeyEvent",
+    "port": "event"
+   },
+   "tgt": {
+    "process": "KeyPress",
+    "port": "event"
+   }
+  },
+  {
+   "src": {
+    "process": "KeyPress",
+    "port": "processedevent"
+   },
+   "tgt": {
+    "process": "ConsumeKeyEvent_hoab6",
+    "port": "event"
+   }
+  },
+  {
+   "src": {
+    "process": "KeyPress",
+    "port": "keyval"
+   },
+   "tgt": {
+    "process": "LowerCase",
+    "port": "in"
+   }
+  },
+  {
+   "src": {
+    "process": "NewClicked",
+    "port": "object"
+   },
+   "tgt": {
+    "process": "Gate",
+    "port": "open"
+   },
+   "metadata": {
+    "route": 0
+   }
+  },
+  {
+   "src": {
+    "process": "SwipeDetect",
+    "port": "direction"
+   },
+   "tgt": {
+    "process": "Gate",
+    "port": "in"
+   },
+   "metadata": {
+    "route": 5
+   }
+  },
+  {
+   "src": {
+    "process": "LowerCase",
+    "port": "out"
+   },
+   "tgt": {
+    "process": "Gate",
+    "port": "in"
+   },
+   "metadata": {
+    "route": 5
+   }
+  },
+  {
+   "src": {
+    "process": "Gate",
+    "port": "out"
+   },
+   "tgt": {
+    "process": "SquashTiles",
+    "port": "direction"
+   },
+   "metadata": {
+    "route": 5
+   }
+  },
+  {
+   "src": {
+    "process": "Events",
+    "port": "event"
+   },
+   "tgt": {
+    "process": "SwipeDetect",
+    "port": "event"
+   },
+   "metadata": {
+    "route": null
+   }
+  },
+  {
+   "src": {
+    "process": "core/Kick_xoynk",
+    "port": "out"
+   },
+   "tgt": {
+    "process": "DestroyOldMap",
+    "port": "map"
+   }
+  },
+  {
+   "src": {
+    "process": "500Delay",
+    "port": "out"
+   },
+   "tgt": {
+    "process": "core/Kick_xoynk",
+    "port": "data"
+   }
+  },
+  {
+   "src": {
+    "process": "NewMap",
+    "port": "map"
+   },
+   "tgt": {
+    "process": "500Delay",
+    "port": "in"
+   },
+   "metadata": {
+    "route": 2
+   }
+  },
+  {
+   "src": {
+    "process": "NewClicked",
+    "port": "object"
+   },
+   "tgt": {
+    "process": "core/Kick_xoynk",
+    "port": "in"
+   },
+   "metadata": {
+    "route": 0
+   }
+  },
+  {
+   "src": {
+    "process": "SquashTiles",
+    "port": "score"
+   },
+   "tgt": {
+    "process": "Count",
+    "port": "in"
+   }
+  },
+  {
+   "src": {
+    "process": "NewClicked",
+    "port": "object"
+   },
+   "tgt": {
+    "process": "Count",
+    "port": "reset"
+   },
+   "metadata": {
+    "route": 0
+   }
+  },
+  {
+   "src": {
+    "process": "Count",
+    "port": "out"
+   },
+   "tgt": {
+    "process": "strings/ToString_eltil",
+    "port": "in"
+   },
+   "metadata": {
+    "route": 0
+   }
+  },
+  {
+   "src": {
+    "process": "strings/ToString_eltil",
+    "port": "out"
+   },
+   "tgt": {
+    "process": "SetScore",
+    "port": "value"
+   }
+  },
+  {
+   "src": {
+    "process": "Count",
+    "port": "out"
+   },
+   "tgt": {
+    "process": "ScoreLabel",
+    "port": "in"
+   },
+   "metadata": {
+    "route": 0
+   }
+  },
+  {
+   "src": {
+    "process": "ScoreLabel",
+    "port": "out"
+   },
+   "tgt": {
+    "process": "SetScore",
+    "port": "in"
+   },
+   "metadata": {
+    "route": 7
+   }
+  },
+  {
+   "src": {
+    "process": "UI",
+    "port": "scorelabel"
+   },
+   "tgt": {
+    "process": "ScoreLabel",
+    "port": "data"
+   },
+   "metadata": {
+    "route": 7
+   }
+  },
+  {
+   "src": {
+    "process": "UI",
+    "port": "mainwindow"
+   },
+   "tgt": {
+    "process": "WindowDestroyed",
+    "port": "object"
+   },
+   "metadata": {
+    "route": 7
+   }
+  },
+  {
+   "src": {
+    "process": "WindowDestroyed",
+    "port": "object"
+   },
+   "tgt": {
+    "process": "Quit",
+    "port": "in"
+   }
+  },
+  {
+   "data": true,
+   "tgt": {
+    "process": "ShowAll",
+    "port": "all"
+   }
+  },
+  {
+   "data": true,
+   "tgt": {
+    "process": "PackEmbedded",
+    "port": "expand"
+   }
+  },
+  {
+   "data": true,
+   "tgt": {
+    "process": "PackEmbedded",
+    "port": "fill"
+   }
+  },
+  {
+   "data": "clicked",
+   "tgt": {
+    "process": "NewClicked",
+    "port": "signal"
+   }
+  },
+  {
+   "data": 4,
+   "tgt": {
+    "process": "NewMap",
+    "port": "width"
+   }
+  },
+  {
+   "data": 4,
+   "tgt": {
+    "process": "NewMap",
+    "port": "height"
+   }
+  },
+  {
+   "data": "reactive",
+   "tgt": {
+    "process": "reactive",
+    "port": "property"
+   }
+  },
+  {
+   "data": "true",
+   "tgt": {
+    "process": "Start",
+    "port": "in"
+   }
+  },
+  {
+   "data": "clicked",
+   "tgt": {
+    "process": "QuitClicked",
+    "port": "signal"
+   }
+  },
+  {
+   "data": 500,
+   "tgt": {
+    "process": "500Delay",
+    "port": "delay"
+   }
+  },
+  {
+   "data": "false",
+   "tgt": {
+    "process": "core/Kick_viopv",
+    "port": "data"
+   }
+  },
+  {
+   "data": "label",
+   "tgt": {
+    "process": "SetScore",
+    "port": "property"
+   }
+  },
+  {
+   "data": false,
+   "tgt": {
+    "process": "SetScore",
+    "port": "keep"
+   }
+  },
+  {
+   "data": true,
+   "tgt": {
+    "process": "Count",
+    "port": "emitreset"
+   }
+  },
+  {
+   "data": "destroy",
+   "tgt": {
+    "process": "WindowDestroyed",
+    "port": "signal"
+   }
+  },
+  {
+   "data": 150,
+   "tgt": {
+    "process": "AnimateTiles",
+    "port": "duration"
+   }
+  },
+  {
+   "data": 10,
+   "tgt": {
+    "process": "SwipeDetect",
+    "port": "mindistance"
+   }
+  }
+ ]
+}

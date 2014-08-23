@@ -1,0 +1,36 @@
+{
+  "name": "MyApplication",
+  "version": "0.0.1",
+  "dbus": [
+    {
+      "file": "dbus/org.mpris.MediaPlayer2.Player.xml"
+    }
+  ],
+  "ui": [
+    {
+      "file": "ui/slider.ui",
+      "additionals": [
+        "scaleadjust",
+        "soundadjust",
+        "spinadjust"
+      ]
+    },
+    {
+      "file": "ui/basic-ui.glade",
+      "additionals": []
+    }
+  ],
+  "libraries": [
+    "Gtk"
+  ],
+  "noflo": {
+    "components": {
+      "Count": "components/Count.coffee",
+      "Title": "components/Title.coffee"
+    },
+    "graphs": {
+      "Main": "graphs/Main.json"
+    },
+    "main": "Main"
+  }
+}

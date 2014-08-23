@@ -3,32 +3,37 @@ const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const CodeWriter = imports.codeWriter;
+const Runtime = imports.runtime;
 const Utils = imports.utils;
 const NoFlo = imports.noflo;
 const Fbp = require('fbp');
 
+let normalizeName = function(name) {
+    return name.replace('noflo-', '');
+};
+
 /* Module listing */
 
 let getModuleAtPath = function(vpath, alternativeFile) {
-    let path = Utils.resolvePath(vpath);
+    let path = Runtime.resolvePath(vpath);
 
-    if (!GLib.file_test(path, GLib.FileTest.IS_DIR))
+    if (!Utils.isPathDirectory(path))
         return null;
 
-    let manifestPath = path + (alternativeFile ? alternativeFile : '/component.json');
-    if (!GLib.file_test(manifestPath, GLib.FileTest.IS_REGULAR))
+    let manifestPath = path + (alternativeFile ? ('/' + alternativeFile) : '/component.json');
+    if (!Utils.isPathRegular(manifestPath))
         return null;
 
-    let file = Gio.File.new_for_path(manifestPath);
-    let [, manifestContent] = file.load_contents(null);
-    let manifest;
+    let manifestContent = Utils.loadTextFileContent(manifestPath);
 
     let module;
     try {
         module = JSON.parse('' + manifestContent);
         module.vpath = vpath;
         module.path = path;
+        module.normalizedName = normalizeName(module.name);
     } catch (e) {
+        log('Cannot load manifest : ' + vpath);
         return null;
     }
 
@@ -37,19 +42,17 @@ let getModuleAtPath = function(vpath, alternativeFile) {
         !module.noflo)
         return null;
 
-    log('loaded: ' + module.name);
-
     return module;
 };
 
 let getModulesInPath = function(vpath) {
     let modules = {};
-    let path = Utils.resolvePath(vpath);
+    let path = Runtime.resolvePath(vpath);
 
-    if (!GLib.file_test(path, GLib.FileTest.IS_DIR))
+    if (!Utils.isPathDirectory(path))
         return modules;
 
-    Utils.forEachInDirectory(Gio.File.new_for_path(path), function(child) {
+    Utils.forEachInDirectory(Gio.File.new_for_uri(path), false, function(child) {
         let module = getModuleAtPath(Utils.buildPath(vpath,
                                                      child.get_basename()));
 
@@ -84,10 +87,6 @@ let ComponentLoader = function(options) {
     self.modules = {};
     self.components = {};
 
-    let normalizeName = function(name) {
-        return name.replace('noflo-', '');
-    };
-
     let removeExtension = function(path) {
         let ret = path.replace(/\.coffee$/, '');
         return ret.replace(/\.js$/, '');
@@ -97,32 +96,47 @@ let ComponentLoader = function(options) {
 
     let generateComponentInstance = function(vpath) {
         return function(metadata) {
-            try {
-                if (!this.implementation)
-                    this.implementation = require(vpath);
-                let instance = this.implementation.getComponent(metadata);
-                return instance;
-            } catch (e) {
-                log('Failed to load component : ' + vpath + ' : ' + e.message);
-                throw e;
-            }
+            if (!this.implementation)
+                this.implementation = require(vpath);
+            let instance = this.implementation.getComponent(metadata);
+            return instance;
         };
     };
 
     let generateComponentCodeLoader = function(path) {
         return function() {
-            let file = Gio.File.new_for_path(Utils.resolvePath(path));
-            let [, code] = file.load_contents(null);
-            return '' + code;
+            let file = Gio.File.new_for_uri(Runtime.resolvePath(path));
+            try {
+                let [, code] = file.load_contents(null);
+                return '' + code;
+            } catch (e) {
+                log('Fail to load component : ' + path);
+                throw e;
+            }
+            return null;
         };
     };
 
     /* Graphs */
 
+    let generateGraphCodeLoader = function(vpath) {
+        return function() {
+            try {
+                let path = Runtime.resolvePath(vpath);
+                let source = Utils.loadTextFileContent(path);
+                return source;
+            } catch (e) {
+                log('Failed to load graph : ' + vpath);
+                throw e;
+            }
+            return null;
+        };
+    };
+
     let generateGraphDefinition = function(vpath) {
         return function() {
             try {
-                let path = Utils.resolvePath(vpath);
+                let path = Runtime.resolvePath(vpath);
                 let source = Utils.loadTextFileContent(path);
                 let def;
                 if (path.indexOf('.fbp') >= 0)
@@ -135,7 +149,7 @@ let ComponentLoader = function(options) {
                 };
                 return def;
             } catch (e) {
-                log('Failed to load graph : ' + vpath + ' : ' + e.message);
+                log('Failed to load graph definition : ' + vpath + ' : ' + e.message);
                 throw e;
             }
             return null;
@@ -169,7 +183,74 @@ let ComponentLoader = function(options) {
 
     /**/
 
-    self._loadModules = function() {
+    self._loadModule = function(module) {
+        // Avoid circular dependencies
+        if (module.loading || module.loaded)
+            return;
+        module.loading = true;
+
+        // Try to load dependencies first
+        if (module.dependencies) {
+            for (let depName in module.dependencies) {
+                let dep = /[^\/]+\/(.*)/.exec(depName);
+                if (dep && dep[1] && self.modules[dep[1]])
+                    self._loadModule(self.modules[dep[1]]);
+            }
+        }
+
+        // Components
+        for (let componentName in module.noflo.components) {
+            let path = normalizeName(module.name + '/' + componentName);
+            let fullPath = getComponentFullPath(module, componentName);
+            let requirePath = removeExtension(fullPath);
+            self.components[path] = {
+                path: fullPath,
+                isGraph: false,
+                module: module,
+                moduleName: normalizeName(module.name),
+                name: componentName,
+                create: generateComponentInstance(requirePath),
+                getCode: generateComponentCodeLoader(fullPath),
+                language: Utils.guessLanguageFromFilename(fullPath),
+            };
+        }
+
+        // Graphs
+        for (let graphName in module.noflo.graphs) {
+            let path = normalizeName(module.name + '/' + graphName);
+            let fullPath = getGraphFullPath(module, graphName);
+            let component = {
+                path: fullPath,
+                isGraph: true,
+                module: module,
+                moduleName: normalizeName(module.name),
+                name: graphName,
+                getDefinition: generateGraphDefinition(fullPath),
+                getCode: generateGraphCodeLoader(fullPath),
+                create: generateGraphLoader(path),
+                language: 'json',
+            };
+
+            if (module.name == self.applicationName &&
+                graphName == self.mainGraphName)
+                self.mainGraph = component;
+            else
+                self.components[path] = component;
+        }
+
+        // Loaders
+        if (module.noflo.loader) {
+            let path = module.vpath + '/' + module.noflo.loader;
+            path = removeExtension(path);
+            let loader = require(path);
+            loader(self);
+        }
+
+        delete module.loading;
+        module.loaded = true;
+    };
+
+    self.loadModules = function() {
         // Load libray modules
         self.modules = getModules(self.options.paths);
         // Load application components/graphs
@@ -179,54 +260,7 @@ let ComponentLoader = function(options) {
         self.modules[appModule.name] = appModule;
 
         for (let moduleName in self.modules) {
-            let module = self.modules[moduleName];
-
-            //log('loading ' + moduleName);
-            // Components
-            for (let componentName in module.noflo.components) {
-                let path = normalizeName(moduleName + '/' + componentName);
-                let fullPath = getComponentFullPath(module, componentName);
-                let requirePath = removeExtension(fullPath);
-                self.components[path] = {
-                    isGraph: false,
-                    module: module,
-                    moduleName: normalizeName(moduleName),
-                    name: componentName,
-                    create: generateComponentInstance(requirePath),
-                    getCode: generateComponentCodeLoader(fullPath),
-                    language: Utils.guessLanguageFromFilename(fullPath),
-                };
-            }
-
-            // Graphs
-            for (let graphName in module.noflo.graphs) {
-                let path = normalizeName(moduleName + '/' + graphName);
-                let fullPath = getGraphFullPath(module, graphName);
-                let component = {
-                    isGraph: true,
-                    module: module,
-                    moduleName: normalizeName(moduleName),
-                    name: graphName,
-                    getDefinition: generateGraphDefinition(fullPath),
-                    getCode: generateGraphDefinition(fullPath),
-                    create: generateGraphLoader(path),
-                    language: 'json',
-                };
-
-                if (module == appModule &&
-                    graphName == self.mainGraphName)
-                    self.mainGraph = component;
-                else
-                    self.components[path] = component;
-            }
-
-            // Loaders
-            if (module.noflo.loader) {
-                let path = module.vpath + '/' + module.noflo.loader;
-                path = removeExtension(path);
-                let loader = require(path);
-                loader(self);
-            }
+            self._loadModule(self.modules[moduleName]);
         }
     };
 
@@ -234,14 +268,14 @@ let ComponentLoader = function(options) {
         callback(self.components);
     };
 
-    self.load = function(name, callback, delayed, metadata) {
+    self.load = function(name, callback, metadata) {
         //log('load name=' + name);
         let item = self.components[name];
         if (!item)
             throw new Error('Component ' + name + ' not available');
 
         if (item.isGraph)
-            self._loadGraph(item, delayed, metadata, callback);
+            self._loadGraph(item, metadata, callback);
         else
             self._loadComponent(item, metadata, callback);
     };
@@ -249,30 +283,36 @@ let ComponentLoader = function(options) {
     self._loadComponent = function(item, metadata, callback) {
 
         Mainloop.timeout_add(0, Lang.bind(this, function() {
-            callback(item.create(metadata));
+            try {
+                callback(item.create(metadata));
+            } catch (e) {
+                log('Cannot load component ' + item.name +
+                    ' ' + item.path + ' : ' + e.message);
+            }
             return false;
         }));
     }
 
-    self._loadGraph = function(item, delayed, metadata, callback) {
+    self._loadGraph = function(item, metadata, callback) {
         //log('loadGraph ' + item.name);
         let graph = NoFlo.Graph.getComponent(metadata);
         let graphSocket = NoFlo.internalSocket.createSocket();
         graph.loader = self;
         graph.baseDir = self.options.baseDir
 
-        if (delayed) {
-            let delaySocket = NoFlo.internalSocket.createSocket();
-            graph.inPorts.start.attach(delaySocket);
-        }
-
         graph.inPorts.graph.attach(graphSocket);
-        graphSocket.send(item.create(metadata));
-        graphSocket.disconnect();
-        graph.inPorts.remove('graph');
-        graph.inPorts.remove('start');
-        graph.setIcon('sitemap');
-        callback(graph);
+
+        try {
+            graphSocket.send(item.create(metadata));
+            graphSocket.disconnect();
+            graph.inPorts.remove('graph');
+            graph.inPorts.remove('start');
+            graph.setIcon('sitemap');
+            callback(graph);
+        } catch (e) {
+            log('Cannot load graph ' + item.name +
+                ' ' + item.path + ' : ' + e.message);
+        }
     };
 
     self.registerComponent = function(packageId, name, constructor) {
@@ -284,16 +324,18 @@ let ComponentLoader = function(options) {
         }
 
         self.components[path] = {
+            path: 'unknown',
             module: null,
             name: name,
             create: constructor,
+            getCode: function() { return ''; },
             language: 'javascript'
         };
-        log('registerComponent ' + packageId + ' / ' + name);
+        //log('registerComponent ' + packageId + ' / ' + name);
     };
 
     self.registerGraph = function(packageId, name, gPath, callback) {
-        log('----------> registerGraph ' + packageId + ' / ' + name);
+        //log('----------> registerGraph ' + packageId + ' / ' + name);
         throw new Error('registerGraph ' + packageId + ' / ' + name);
     };
 
@@ -344,8 +386,36 @@ let ComponentLoader = function(options) {
 
     /**/
 
+    self.getComponentModule = function(name) {
+        let item = self.components[name];
+        if (item)
+            return item.module;
+        return null;
+    };
+
+    self.getComponentCode = function(name) {
+        //log('Looking up component : ' + name);
+        let item = self.components[name];
+        if (item)
+            return item.getCode();
+        return null;
+    };
+
+    self.getComponent = function(name) {
+        return self.components[name];
+    };
+
+    self.getModule = function(name) {
+        let item = self.modules[name];
+        if (item)
+            return item;
+        return null;
+    };
+
+    /**/
+
     self.save = function(runtime) {
-        log('Saving graphs!');
+        //log('Saving graphs!');
         for (let i in runtime.graph.graphs) {
             let graph = runtime.graph.graphs[i];
             CodeWriter.writeGraph(graph);
@@ -366,11 +436,11 @@ let ComponentLoader = function(options) {
     };
 
     self.autosave = function(runtime) {
-        log('autosave!');
+        //log('autosave!');
         self._runtime = runtime;
         for (let i in runtime.graph.graphs) {
             let graph = runtime.graph.graphs[i];
-            log('listening on ' + graph.name);
+            //log('listening on ' + graph.name);
             graph.on('endTransaction', Lang.bind(self, self._graphUpdate));
         }
    };
@@ -401,7 +471,7 @@ let ComponentLoader = function(options) {
     /**/
 
     self.install = function(runtime) {
-        self._loadModules();
+        self.loadModules();
         self._installGraphs(runtime);
         self._installNetwork(runtime);
     };

@@ -1,19 +1,21 @@
 const Gio = imports.gi.Gio;
+const Runtime = imports.runtime;
 const Utils = imports.utils;
 
 const CoffeeScript = imports.libs.coffeescript.CoffeeScript;
+
+//
+let compileCoffeeSource = function(source) {
+    return CoffeeScript.compile(source, { bare: true });
+};
 
 // from: GFile
 // to: GFile
 let compileFile = function(to, from) {
     let [, coffeeSource] = from.load_contents(null);
-    let javascriptSource = CoffeeScript.compile('' + coffeeSource,
-                                                { bare: true });
-    let module = eval('(function () { var exports = {};' +
-                      javascriptSource + '; return exports; })()');
+    let javascriptSource = compileCoffeeSource('' + coffeeSource);
 
     // Compilation cache
-    log('writing ' + to.get_path());
     try {
         to.get_parent().make_directory_with_parents(null);
     } catch (e) {
@@ -21,8 +23,18 @@ let compileFile = function(to, from) {
     to.replace_contents(javascriptSource,
                         null,
                         false,
-                        Gio.FileCreateFlags.NONE, null,
+                        Gio.FileCreateFlags.REPLACE_DESTINATION,
+                        null,
                         null);
+
+    let module = null;
+    try {
+        module = eval('(function () { var exports = {};' +
+                      javascriptSource + '; return exports; })()');
+    } catch (e) {
+        log('Failed to load ' + from.get_uri() + ' : ' + e);
+        throw e;
+    }
 
     return module;
 };
@@ -31,30 +43,34 @@ let compileFile = function(to, from) {
 let loadJavascriptFile = function(file) {
     let [, javascriptSource] = file.load_contents(null);
 
-    let module = eval('(function () { var exports = {};' +
-                      javascriptSource + '; return exports; })()');
+    let module = null;
+    try {
+        module = eval('(function () { var exports = {};' +
+                          javascriptSource + '; return exports; })()');
+    } catch (e) {
+        log('Failed to load ' + file.get_uri() + ' : ' + e);
+        throw e;
+    }
 
     return module;
 };
 
 // vpath: string, doesn't include extension
 let loadJavascript = function(vpath) {
-    let path = Utils.resolvePath(vpath);
-    let file = Gio.File.new_for_path(path + '.js');
-    let [, javascriptSource] = file.load_contents(null);
+    let path = Runtime.resolvePath(vpath);
+    let file = Gio.File.new_for_uri(path + '.js');
 
-    let module = eval('(function () { var exports = {};' +
-                      javascriptSource + '; return exports; })()');
+    let module = loadJavascript(file);
 
     return module;
 };
 
 // vpath: string, doesn't include extension
 let loadCoffeescript = function(vpath) {
-    let sourcePath = Utils.resolvePath(vpath);
-    let cachedPath = Utils.resolveCachedPath(vpath);
-    let sourceFile = Gio.File.new_for_path(sourcePath + '.coffee');
-    let cachedFile = Gio.File.new_for_path(cachedPath + '.js');
+    let sourcePath = Runtime.resolvePath(vpath);
+    let cachedPath = Runtime.resolveCachedPath(vpath);
+    let sourceFile = Gio.File.new_for_uri(sourcePath + '.coffee');
+    let cachedFile = Gio.File.new_for_uri(cachedPath + '.js');
 
     if (cachedFile.query_exists(null)) {
         let sourceFileInfo = sourceFile.query_info('time::modified',

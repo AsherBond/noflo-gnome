@@ -1,0 +1,53 @@
+{
+  "name": "noflo-gtk",
+  "json": [
+    "component.json"
+  ],
+  "scripts": [
+    "Add.coffee",
+    "BuilderAddFile.coffee",
+    "ClutterInit.coffee",
+    "ComponentLoader.coffee",
+    "ConsumeEvent.coffee",
+    "GetObject.coffee",
+    "GetStage.coffee",
+    "GetWidget.coffee",
+    "GladeConstructorComponent.coffee",
+    "GrabFocus.coffee",
+    "Hide.coffee",
+    "Init.coffee",
+    "KeyPressDetect.coffee",
+    "ListenEvent.coffee",
+    "LoadPixbuf.coffee",
+    "Main.coffee",
+    "Pack.coffee",
+    "Quit.coffee",
+    "Resize.coffee",
+    "ScalePixbuf.coffee",
+    "Show.coffee"
+  ],
+  "noflo": {
+    "loader": "ComponentLoader.coffee",
+    "components": {
+      "Add": "Add.coffee",
+      "BuilderAddFile": "BuilderAddFile.coffee",
+      "ClutterInit": "ClutterInit.coffee",
+      "ConsumeEvent": "ConsumeEvent.coffee",
+      "Hide": "Hide.coffee",
+      "GetObject": "GetObject.coffee",
+      "GetStage": "GetStage.coffee",
+      "GetWidget": "GetWidget.coffee",
+      "GrabFocus": "GrabFocus.coffee",
+      "Init": "Init.coffee",
+      "KeyPressDetect": "KeyPressDetect.coffee",
+      "ListenEvent": "ListenEvent.coffee",
+      "LoadPixbuf": "LoadPixbuf.coffee",
+      "Main": "Main.coffee",
+      "Pack": "Pack.coffee",
+      "Quit": "Quit.coffee",
+      "Resize": "Resize.coffee",
+      "ScalePixbuf": "ScalePixbuf.coffee",
+      "Show": "Show.coffee"
+    }
+  }
+}

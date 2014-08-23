@@ -37,7 +37,7 @@ const CmdOptions = [
         shortName: 'u',
         requireArgument: false,
         defaultValue: false,
-        help: 'Whether to start the UI automatically',
+        help: 'Start the UI automatically',
     },
     {
         name: 'help',
@@ -81,17 +81,20 @@ let exec = function(args) {
 
     if (options.options.help) {
         Options.printHelp('noflo-gnome run', CmdOptions);
-        return;
+        return -1;
     }
 
     let manifest;
     try {
         manifest = Utils.parseJSON(
             Utils.loadTextFileContent(
-                Utils.resolvePath('local://manifest.json')));
+                Runtime.resolvePath('local://manifest.json')));
     } catch (e) {
-        log('Cannot load manifest : ' + manifest.name + ' : ' + e.message);
+        log('Cannot load manifest : ' + e.message);
+        throw e;
     }
+
+    Runtime.setArguments(options.arguments);
 
     if (options.options.debug) {
         if (options.options.ui) {
